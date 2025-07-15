@@ -121,7 +121,7 @@ async function requestCameraAccess() {
             document.getElementById('permissionRequest').style.display = 'none';
             
             // Start capturing images every second
-            captureInterval = setInterval(captureAndSendImage, 1000);
+            captureInterval = setInterval(captureAndSendImage, 2000);
         };
     } catch (err) {
         console.error("Camera access denied:", err);
