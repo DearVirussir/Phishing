@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Login Matrix | Dear Virus</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --neon-green: #0f0;
+            --neon-blue: #08f;
+            --neon-purple: #90f;
+            --matrix-green: #00ff41;
+            --dark-bg: #0a0a12;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.15;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3rem;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+        
+        .subtitle {
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .dev-signature {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.9rem;
+            color: var(--neon-purple);
+            border: 1px dashed var(--neon-purple);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+        
+        .login-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .login-card {
+            background: rgba(10, 10, 18, 0.7);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+        
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue), var(--neon-purple), var(--neon-green));
+            background-size: 400%;
+            border-radius: 10px;
+            opacity: 0;
+            transition: 0.5s;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.5);
+        }
+        
+        .login-card:hover::before {
+            opacity: 1;
+            animation: animate-border 4s linear infinite;
+        }
+        
+        .platform-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .login-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .login-link:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .login-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--neon-green);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .login-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            border-top: 1px dashed var(--neon-purple);
+            padding-top: 1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .contact-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(0, 255, 65, 0.3);
+            }
+            to {
+                text-shadow: 0 0 15px var(--neon-green), 0 0 30px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.2);
+            }
+        }
+        
+        @keyframes animate-border {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 400% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+        
+        /* 3D Cube Animation */
+        .cube-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            perspective: 1000px;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 15s infinite linear;
+        }
+        
+        .face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--neon-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+        }
+        
+        .front { transform: rotateY(0deg) translateZ(50px); }
+        .back { transform: rotateY(180deg) translateZ(50px); }
+        .right { transform: rotateY(90deg) translateZ(50px); }
+        .left { transform: rotateY(-90deg) translateZ(50px); }
+        .top { transform: rotateX(90deg) translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
+        
+        @keyframes rotate {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="matrix-bg"></div>
+    <div id="particles-js"></div>
+    
+    <div class="cube-container">
+        <div class="cube">
+            <div class="face front">DV</div>
+            <div class="face back">SY</div>
+            <div class="face right">ED</div>
+            <div class="face left">0x</div>
+            <div class="face top">1A</div>
+            <div class="face bottom">3F</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="dev-signature">DEAR VIRUS<br>Syed Muhammad Khubaib Shah</div>
+            <h1>CYBER LOGIN MATRIX</h1>
+            <div class="subtitle">// Collection of simulated login interfaces //</div>
+        </header>
+        
+        <div class="login-grid">
+            <div class="login-card">
+                <span class="platform-icon" style="color: #E1306C;">📷</span>
+                <a href="insta/index.html" class="login-link">Instagram</a>
+                <div class="hint">// Social media platform</div>
+            </div>
+            
+            <div class="login-card">
+                <span class="platform-icon" style="color: #1877F2;">👍</span>
+                <a href="fb/facebook.html" class="login-link">Facebook</a>
+                <div class="hint">// Social networking</div>
+            </div>
+            
+            <div class="login-card">
+                <span class="platform-icon" style="color: #4267B2;">🔒</span>
+                <a href="fb_sec/login.html" class="login-link">Facebook Secure</a>
+                <div class="hint">// Enhanced security</div>
+            </div>
+            
+            <div class="login-card">
+                <span class="platform-icon" style="color: #EA4335;">✉️</span>
+                <a href="gmail/google.html" class="login-link">Gmail</a>
+                <div class="hint">// Email service</div>
+            </div>
+            
+            <div class="login-card">
+                <span class="platform-icon" style="color: #1DA1F2;">🐦</span>
+                <a href="twitter/twitter.html" class="login-link">Twitter</a>
+                <div class="hint">// Microblogging</div>
+            </div>
+            
+            <div class="login-card">
+                <span class="platform-icon" style="color: #0f0;">♪</span>
+                <a href="tiktok/login.html" class="login-link">TikTok</a>
+                <div class="hint">// Free TikTok Likes</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div>DEAR VIRUS SECURITY RESEARCH</div>
+            <div class="contact-info">
+                <a href="https://t.me/dear_virus" class="contact-link" target="_blank">Telegram: @dear_virus</a>
+                <a href="tel:+923709213915" class="contact-link">Phone: +92 370 9213915</a>
+            </div>
+            <div class="disclaimer">// For educational purposes only //</div>
+        </div>
+    </div>
+    
+    <script>
+        // Matrix background effect
+        const canvas = document.createElement('canvas');
+        document.getElementById('matrix-bg').appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        // Particles.js config
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ff41" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#00ff41", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        });
+    </script>
+</body>
+</html>
